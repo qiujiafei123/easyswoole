@@ -6,6 +6,7 @@
     },
     "require": {
         "easyswoole/easyswoole": "3.x",
-        "easyswoole/swoole-ide-helper": "^1.2"
+        "easyswoole/swoole-ide-helper": "^1.2",
+        "easyswoole/mysqli": "^1.1"
     }
 }

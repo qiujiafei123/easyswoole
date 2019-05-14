@@ -26,6 +26,11 @@ class BaseController extends Controller
 
     public function onException(\Throwable $throwable): void
     {
+        $instance = \EasySwoole\EasySwoole\Config::getInstance();
+        //如果是dev环境，则输出全部错误信息
+        if (true === $instance->getConf('DISPLAY_ERROR')) {
+            parent::onException($throwable);
+        }
         $this->writeJson(500, $throwable->getMessage(), '服务器内部异常');
     }
 }

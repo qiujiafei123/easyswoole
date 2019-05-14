@@ -9,16 +9,23 @@
 namespace App\HttpController\Api;
 
 use App\HttpController\BaseController;
+use App\Utility\Pool\MysqlPool;
+use EasySwoole\Component\Pool\PoolManager;
+use EasySwoole\Mysqli\Mysqli;
 
 class Index extends BaseController
 {
     public function video()
     {
-        new abc();
-        $data = [
-            'id' => 1,
-            'param' => $this->request()->getRequestParam()
-        ];
+        $db = PoolManager::getInstance()->getPool(MysqlPool::class)->getObj();
+
+        $data = $db->get('test');//获取一个表的数据
+        PoolManager::getInstance()->getPool(MysqlPool::class)->recycleObj($db);
+
+//        $data = [
+//            'id' => 1,
+//            'param' => $this->request()->getRequestParam()
+//        ];
         return $this->successJson($data);
     }
 }
