@@ -10,6 +10,7 @@ namespace EasySwoole\EasySwoole;
 
 
 use App\Utility\Pool\MysqlPool;
+use App\Utility\Pool\RedisPool;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\EasySwoole\Swoole\EventRegister;
 use EasySwoole\EasySwoole\AbstractInterface\Event;
@@ -24,6 +25,7 @@ class EasySwooleEvent implements Event
         // TODO: Implement initialize() method.
         date_default_timezone_set('Asia/Shanghai');
         PoolManager::getInstance()->register(MysqlPool::class,Config::getInstance()->getConf('MYSQL.POOL_MAX_NUM'));
+        PoolManager::getInstance()->register(RedisPool::class,Config::getInstance()->getConf('REDIS.POOL_MAX_NUM'));
 
     }
 
