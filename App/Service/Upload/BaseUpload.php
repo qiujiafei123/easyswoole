@@ -47,11 +47,15 @@ class BaseUpload
      * BaseUpload constructor.
      * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, $type = null)
     {
         $this->request = $request;
-        $files = $request->getSwooleRequest()->files;
-        $this->type = current(array_keys($files));
+        if ($type !== null) {
+            $this->type = $type;
+        } else {
+            $files = $request->getSwooleRequest()->files;
+            $this->type = current(array_keys($files));
+        }
 
     }
 
