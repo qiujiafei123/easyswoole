@@ -30,10 +30,10 @@ class BaseController extends Controller
      * @param int $code
      * @return bool
      */
-    public function successJson($data = '', string $message = 'ok', int $code = 200)
+    public function successJson($data = '', string $message = 'OK', int $code = 200)
     {
         //我将这里的writeJson方法里的参数调换了位置，符合主流的状态码，成功与否，结果集顺序
-        return $this->writeJson($code, $data, $message);
+        return $this->writeJson($code, $message, $data);
     }
 
     /**
@@ -45,7 +45,7 @@ class BaseController extends Controller
      */
     public function errorJson($data = '', string $message = 'error', int $code = 500)
     {
-        return $this->writeJson($code, $data, $message);
+        return $this->writeJson($code, $message, $data);
     }
 
     /**

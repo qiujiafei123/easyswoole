@@ -8,6 +8,7 @@
 namespace App\HttpController\Api;
 
 use App\Common\ClassArr;
+use App\Common\HelpFunction;
 use App\HttpController\BaseController;
 
 class Upload extends BaseController
