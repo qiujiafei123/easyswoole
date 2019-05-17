@@ -7,6 +7,7 @@
  */
 namespace App\Service\Upload;
 
+use EasySwoole\Http\Message\UploadFile;
 use EasySwoole\Http\Request;
 
 class BaseUpload
@@ -102,5 +103,10 @@ class BaseUpload
     public function getNewFileName()
     {
         return uniqid().$this->fileName;
+    }
+
+    public function getUploadFile(): UploadFile
+    {
+        return $this->request->getUploadedFile($this->type);
     }
 }

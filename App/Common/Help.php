@@ -7,7 +7,7 @@
  */
 namespace App\Common;
 
-class HelpFunction
+class Help
 {
 
     public static function getConfig(string $config)
