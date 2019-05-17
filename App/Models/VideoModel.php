@@ -10,21 +10,29 @@ namespace App\Models;
 class VideoModel extends BaseModel
 {
     protected $tablename = 'video';
+    protected $pageSize = 3;
 
     public function insertData(array $data)
     {
         if (is_array(current($data))) {
             foreach ($data as $val) {
-                $data = $this->db->insert($this->tablename, $val);
+                $result = $this->db->insert($this->tablename, $val);
             }
         } else {
-            $data = $this->db->insert($this->tablename, $data);
+            $result = $this->db->insert($this->tablename, $data);
         }
-        return $data;
+        return $result;
     }
 
-    public function getAll()
+    public function getPaginationData($page)
     {
-        return $this->db->get($this->tablename);//获取表的数据
+        $page_size=3;
+        $total = $this->db->count($this->tablename);
+        $data['totalPage'] = ceil($total/$this->pageSize);
+        $data['nextPage'] = $page+1;
+        $data['lastPage'] = $page-1;
+        $data['data'] = $this->db->get($this->tablename,[($page-1)*$page_size,$page_size],'*');
+        //$sql = $this->db->getLastQuery();
+        return $data;
     }
 }

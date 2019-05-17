@@ -9,6 +9,7 @@
 namespace App\HttpController\Api;
 
 use App\HttpController\BaseController;
+use App\Models\VideoModel;
 use App\Utility\Pool\MysqlObject;
 use App\Utility\Pool\MysqlPool;
 use App\Utility\Pool\RedisObject;
@@ -19,6 +20,12 @@ use EasySwoole\Mysqli\Mysqli;
 class Index extends BaseController
 {
     public function index()
+    {
+        $name = (new VideoModel())->getPaginationData(1);
+        var_dump($name);
+    }
+
+    public function mysql()
     {
         //两种调用方式，第一种主动回收，第二种自动回收
 //        $db = PoolManager::getInstance()->getPool(MysqlPool::class)->getObj();

@@ -29,13 +29,16 @@ class Video extends BaseController
         }
         try {
             $baseData = ['create_time' => time(), 'update_time' => time()];
+            $post['cat_id'] = intval($post['cat_id']);
             $data = array_unique(array_merge($post, $baseData));
             $flag = (new VideoModel())->insertData($data);
+
         } catch (\Exception $e) {
             return $this->errorJson($e->getMessage());
         }
 
-        if (!$flag) {
+
+        if ($flag === false) {
             return $this->errorJson("记录失败");
         }
 
