@@ -16,13 +16,28 @@ use App\Utility\Pool\RedisObject;
 use App\Utility\Pool\RedisPool;
 use EasySwoole\Component\Pool\PoolManager;
 use EasySwoole\Mysqli\Mysqli;
+use EasySwoole\Validate\Validate;
+use function FastRoute\TestFixtures\empty_options_cached;
 
 class Index extends BaseController
 {
     public function index()
     {
-        $name = (new VideoModel())->getPaginationData(1);
-        var_dump($name);
+        $condition['cat_id'] = isset($this->param['cat_id']) ? $this->param['cat_id'] : [];
+        try {
+            $data = (new VideoModel())->getPaginationData($this->param['page'], $condition);
+        } catch (\Exception $e) {
+            return $this->errorJson('首页数据查询失败');
+        }
+
+        if (! empty($data['lists'])) {
+            foreach ($data['lists'] as &$list) {
+                $list['create_time'] = date("Y-m-d H:i:s", $list['create_time']);
+                $list['video_duration'] = gmstrftime("%H:%M:%S", $list['video_duration']);
+            }
+        }
+
+        return $this->successJson($data);
     }
 
     public function mysql()

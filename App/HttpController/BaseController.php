@@ -16,6 +16,8 @@ use EasySwoole\Http\AbstractInterface\Controller;
  */
 class BaseController extends Controller
 {
+    protected $param = [];
+
     /**
      * 根据父类的抽象方法必须实现这个index方法
      */
@@ -63,5 +65,18 @@ class BaseController extends Controller
         }
         //这里将不是dev环境的启动，将错误输出为 json 格式，防止前端解析失败以及暴露服务器内部信息
         $this->writeJson(500, '服务器内部异常');
+    }
+
+    public function onRequest(?string $action): ?bool
+    {
+        $this->getParam();
+        return true;
+    }
+
+    public function getParam()
+    {
+        $param = $this->request()->getRequestParam();
+        $param['page'] = isset($param['page']) ? intval($param['page']) : 1;
+        $this->param = $param;
     }
 }
