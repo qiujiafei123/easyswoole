@@ -8,6 +8,7 @@
  */
 namespace App\HttpController\Api;
 
+use App\Crontab\CacheVideo;
 use App\HttpController\BaseController;
 use App\Models\VideoModel;
 use App\Utility\Pool\MysqlObject;
@@ -24,6 +25,9 @@ class Index extends BaseController
     public function index()
     {
         $condition['cat_id'] = isset($this->param['cat_id']) ? $this->param['cat_id'] : [];
+        if ($this->param['page'] == 1) {
+            $this->list();
+        }
         try {
             $data = (new VideoModel())->getPaginationData($this->param['page'], $condition);
         } catch (\Exception $e) {
@@ -38,6 +42,21 @@ class Index extends BaseController
         }
 
         return $this->successJson($data);
+    }
+
+    public function list()
+    {
+        $catId = isset($this->param['cat_id']) ? $this->param['cat_id'] : 0;
+        $key = CacheVideo::getCacheKey($catId);
+        try {
+            RedisPool::invoke(function (RedisObject $redis) use ($key) {
+                $data = $redis->get($key);
+                $data = json_decode($data, true);
+                return $this->successJson($data);
+            });
+        } catch (\Exception $e) {
+            return $this->errorJson('首页数据查询失败');
+        }
     }
 
     public function mysql()

@@ -54,7 +54,22 @@ class VideoModel extends BaseModel
         return $data;
     }
 
-    public function cacheVideo($condition = [], $pageSize = 1000)
+    /**
+     * 获取单条数据
+     * @param $id
+     * @return mixed
+     */
+    public function getOne($condition = [])
+    {
+        if (!empty($condition)) {
+            $value = current($condition);
+            $key = array_search($value, $condition);
+            $this->db->where($key, $value);
+        }
+        return $this->db->getOne($this->tablename);
+    }
+
+    public function cacheVideo($condition = [], $pageSize = 3)
     {
         $this->pageSize = $pageSize;
         if (!empty($condition['cat_id'] && $condition['cat_id'] !== 0)) {
